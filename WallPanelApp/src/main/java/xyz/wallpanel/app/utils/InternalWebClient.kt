@@ -27,6 +27,12 @@ open class InternalWebClient(val resources: Resources, private val callback: Web
     private var currentUrl = ""
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+        if (url.startsWith("tel:")) { 
+            Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse(url)); 
+            startActivity(intent);
+            view.reload();
+            return true;
+        }
         if (!currentUrl.equals(url, ignoreCase = true)){
             currentUrl = url;
             view.loadUrl(currentUrl);
